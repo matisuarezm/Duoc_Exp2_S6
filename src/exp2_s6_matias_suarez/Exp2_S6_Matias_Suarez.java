@@ -1,5 +1,6 @@
 package exp2_s6_matias_suarez;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -11,9 +12,11 @@ public class Exp2_S6_Matias_Suarez {
     Scanner input = new Scanner(System.in);
     static String nombreTeatro = "TEATRO MORO";
     final int totalAsientosTeatro = 20;
+    final int valorEntrada = 5000;
     final String[] asientos = new String[totalAsientosTeatro]; //estado de asientos Reservado - Comprado - Libre
-    int entradasReservadas = 0;
-    int entradasVendidas = 0;
+    ArrayList<Integer> guardaAsientoComprado = new ArrayList<>();
+    static int entradasReservadas = 0;
+    static int entradasVendidas = 0;
     
     //Clase Main
     public static void main(String[] args) throws InterruptedException {
@@ -97,14 +100,16 @@ public class Exp2_S6_Matias_Suarez {
         
         while (reservados < cantidadAReservar){
             try{
-                System.out.print("Ingrese el numero de asiento a reservar #" + (reservados +1) + ": ");
+                System.out.print("Ingrese el numero de asiento a reservar #" + (reservados + 1) + ": ");
                 int asientoAReservar = input.nextInt();
                 input.nextLine();
                 if (asientoAReservar < 1 || asientoAReservar > totalAsientosTeatro) {
                     System.out.println("Asiento ingresado inválido");
                     continue;
                 }
-                if (!asientos[asientoAReservar - 1].equals("Libre")) {
+                
+                String estadoReserva = asientos[asientoAReservar - 1];
+                if (!estadoReserva.equals("Libre")) {
                     System.out.println("Asiento no disponible. Estado: " + asientos[asientoAReservar - 1]);
                     continue;
                 } 
@@ -120,7 +125,7 @@ public class Exp2_S6_Matias_Suarez {
                 input.nextLine();
             }
         }
-        
+        System.out.println("Reserva finalizada. Has reservado un total de " + cantidadAReservar + " entradas.");
         
     }//Fin metodo ReservarAsiento
     
@@ -128,17 +133,17 @@ public class Exp2_S6_Matias_Suarez {
         System.out.println(":::... MODIFICAR RESERVA ...:::");
         System.out.println("Los asientos reservados son:\n");
         
-        boolean reservados = false;
+        boolean existenReservados = false;
         
         for (int i = 0; i < totalAsientosTeatro; i++) {
             if (asientos[i].equals("Reservado")) {
                 System.out.print((i + 1) + "[" + asientos[i] + "]");
-                reservados = true;
+                existenReservados = true;
                 if ((i + 1) % 4 == 0) System.out.println("");
             }
         }
-        if (!reservados) {
-            System.out.println("\nNo existen reservas para modifcar");
+        if (!existenReservados) {
+            System.out.println("\nNo existen reservas para modificar");
             return;
         }
         
@@ -182,7 +187,7 @@ public class Exp2_S6_Matias_Suarez {
                 asientos[reservaAntigua - 1] = "Libre";
                 asientos[reservaNueva - 1] = "Reservado";
                 
-                System.out.println("El cambio de asiento fue realizado con exito:" + reservaAntigua + " --> " + reservaNueva);
+                System.out.println("El cambio de asiento fue realizado con exito: " + reservaAntigua + " --> " + reservaNueva);
             
             } else if (opcionReserva == 2) {
                 System.out.print("Ingrese el asiento reservado para comprarlo: ");
@@ -198,8 +203,9 @@ public class Exp2_S6_Matias_Suarez {
                 asientos[reservaACompra - 1] = "Comprado";
                 entradasReservadas --;
                 entradasVendidas ++;
+                guardaAsientoComprado.add(reservaACompra);
                 
-                System.out.println("La compra fue realizada con exito para el asiento: " + reservaACompra);
+                System.out.println("La compra fue realizada con exito para el asiento: " + reservaACompra + '\n');
                 
             }else {
                 System.out.println("Opción ingresada no válida");
@@ -212,10 +218,80 @@ public class Exp2_S6_Matias_Suarez {
     }//Fin metodo ModificarReserva
     
     public void ComprarEntrada(){
+        System.out.println(":::... COMPRAR ENTRADAS ...:::");
+        System.out.println("Los asientos disponibles para comprar son:\n");
         
+        boolean existenLibres = false;
+        for (int i = 0; i < totalAsientosTeatro; i++) {
+            if (asientos[i].equals("Libre")) {
+                System.out.print((i + 1) + "[" + asientos[i] + "]");
+                existenLibres = true;
+                if ((i + 1) % 4 == 0) System.out.println("");
+            }
+        }
+        
+        if (!existenLibres) {
+            System.out.println("\nNo hay asientos dispoibles a la venta");
+            return;
+        }
+        
+        int cantidadAComprar = CantidadEntradas();
+        int comprados = 0;
+        
+        while(comprados < cantidadAComprar){
+            System.out.print("Ingrese el numero de asiento a comprar #" + (comprados + 1) + ": ");
+            try{
+                int asientoAComprar = input.nextInt();
+                input.nextLine();
+                if (asientoAComprar < 1 || asientoAComprar > totalAsientosTeatro) {
+                    System.out.println("Numero de asiento no válido");
+                    continue;
+                }
+                
+                String estadoAsiento = asientos[asientoAComprar - 1];
+                if (!estadoAsiento.equals("Libre")) {
+                    System.out.println("El asiento no esta disponible para comprar. Estado actual: " + estadoAsiento);
+                    continue;
+                }
+                
+                //Modificamos estados
+                asientos[asientoAComprar - 1] = "Comprado";
+                entradasVendidas++;
+                guardaAsientoComprado.add(asientoAComprar);
+                System.out.println("El asiento: " + asientoAComprar + " fue comprado existosamente...!!!\n");
+                comprados ++;
+            }catch(InputMismatchException e){
+                System.out.println("Error.. Entrada invalida, Por favor ingrese un numero");
+                input.nextLine();
+            }
+        }
+        System.out.println("Compra finalizada. Has comprado un total de " + cantidadAComprar + " entradas.");
     }//Fin metodo ComprarEntrada
     
     public void ImprimirBoleta(){
+        System.out.println(":::... IMPRESION DE BOLETA ...:::");
+        int totalBoleta = valorEntrada * guardaAsientoComprado.size();
+        
+        if (guardaAsientoComprado.isEmpty()) {
+            System.out.println("No hay compras recientes para generar la boleta");
+            return;
+        }
+                
+        System.out.println("");
+        System.out.println("=====--->>>Boleta de Reserva<<<---====" + '\n');
+        System.out.println("Teatro: " + nombreTeatro);
+        System.out.println("Asientos Comprados: ");
+            for (int asiento : guardaAsientoComprado) {
+                System.out.println("- Asiento N°: " + asiento);
+            }
+        System.out.println("Cantidad Entradas: " + guardaAsientoComprado.size());
+        System.out.println("Valor unitario: " + valorEntrada);
+        System.out.println("Total: $" + (totalBoleta));
+        System.out.println("\n======================================\n");
+        
+        System.out.println("Boleta generada correctamente, Muchas Gracias.\n");
+        
+        guardaAsientoComprado.clear(); //Limpiamos el arreglo con la informacion de compra
         
     }//Fin metodo ImprimirBoleta
     
@@ -239,6 +315,6 @@ public class Exp2_S6_Matias_Suarez {
                 input.nextLine();
             }
         }
-    }
+    }//Fin metodo cantidadEntradas
     
 }
