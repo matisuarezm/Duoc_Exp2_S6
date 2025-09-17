@@ -15,14 +15,16 @@ public class Exp2_S6_Matias_Suarez {
     final int valorEntrada = 5000;
     final String[] asientos = new String[totalAsientosTeatro]; //estado de asientos Reservado - Comprado - Libre
     ArrayList<Integer> guardaAsientoComprado = new ArrayList<>();
-    static int entradasReservadas = 0;
-    static int entradasVendidas = 0;
+    int entradasReservadas = 0;
+    int entradasVendidas = 0;
     
     //Clase Main
     public static void main(String[] args) throws InterruptedException {
         System.out.println("====--->>> BIENVENIDOS AL EXPECTACULAR " + nombreTeatro + " <<<---====\n");
-        Exp2_S6_Matias_Suarez menuPrincipal = new Exp2_S6_Matias_Suarez();//Instanciamos la clase principal
-        menuPrincipal.MostrarMenu();//llamamos al metodo MostrarMenu() dentro de la clase instanaciada
+        
+        //Instanciamos la clase y llamamos al metodo MostrarMenu()
+        Exp2_S6_Matias_Suarez menuPrincipal = new Exp2_S6_Matias_Suarez();
+        menuPrincipal.MostrarMenu();
     }
     
     //Constructor inicializamos todo los asientos como libres
@@ -125,7 +127,7 @@ public class Exp2_S6_Matias_Suarez {
                 input.nextLine();
             }
         }
-        System.out.println("Reserva finalizada. Has reservado un total de " + cantidadAReservar + " entradas.");
+        System.out.println("Reserva finalizada. Has reservado un total de " + cantidadAReservar + " entradas.\n");
         
     }//Fin metodo ReservarAsiento
     
@@ -270,6 +272,7 @@ public class Exp2_S6_Matias_Suarez {
     
     public void ImprimirBoleta(){
         System.out.println(":::... IMPRESION DE BOLETA ...:::");
+        
         int totalBoleta = valorEntrada * guardaAsientoComprado.size();
         
         if (guardaAsientoComprado.isEmpty()) {
