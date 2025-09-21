@@ -3,6 +3,8 @@ package exp2_s6_matias_suarez;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author msuarez
@@ -22,6 +24,7 @@ public class Exp2_S6_Matias_Suarez {
     int entradasReservadas = 0;
     int entradasVendidas = 0;
     
+    
     //Clase Main
     public static void main(String[] args) throws InterruptedException {
         System.out.println("====--->>> BIENVENIDOS AL EXPECTACULAR " + nombreTeatro + " <<<---====\n");
@@ -31,12 +34,14 @@ public class Exp2_S6_Matias_Suarez {
         menuPrincipal.MostrarMenu();
     }
     
+    
     //Constructor inicializamos todo los asientos como libres
     public Exp2_S6_Matias_Suarez(){
         for (int i = 0; i < totalAsientosTeatro; i++) {
             asientos[i] = "Libre";
         }
     }
+    
     
     //Creamos una clase Menu
     public void MostrarMenu() throws InterruptedException{
@@ -86,6 +91,7 @@ public class Exp2_S6_Matias_Suarez {
     
     }//Fin metodo MostrarMenu
     
+    
     public void ReservarAsiento(){
         
         System.out.println(":::... RESERVA DE ASIENTO ...:::");
@@ -126,6 +132,22 @@ public class Exp2_S6_Matias_Suarez {
                 System.out.println("El asiento: " + asientoAReservar + " fue reservado existosamente...!!!\n");
                 reservados ++;
                 
+                
+                //Temporizador reserva por 1 minuto                
+                Timer time = new Timer();
+                TimerTask liberaReservado = new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (asientos[asientoAReservar - 1].equals("Reservado")) {
+                            asientos[asientoAReservar - 1] = "Libre";
+                            System.out.println("\nLa reserva del asiento " + asientoAReservar + " fue liberada exitosamente...!!!");
+                        }
+                        
+                    }
+                };
+                time.schedule(liberaReservado, (1*60*1000));
+                
+                
             }catch (InputMismatchException e){
                 System.out.println("Error.. Entrada invalida, Por favor ingrese un numero");
                 input.nextLine();
@@ -134,6 +156,7 @@ public class Exp2_S6_Matias_Suarez {
         System.out.println("Reserva finalizada. Has reservado un total de " + cantidadAReservar + " entradas.\n");
         
     }//Fin metodo ReservarAsiento
+    
     
     public void ModificarReserva(){
         System.out.println(":::... MODIFICAR RESERVA ...:::");
@@ -228,6 +251,7 @@ public class Exp2_S6_Matias_Suarez {
        
     }//Fin metodo ModificarReserva
     
+    
     public void ComprarEntrada(){
         System.out.println(":::... COMPRAR ENTRADAS ...:::");
         System.out.println("Los asientos disponibles para comprar son:\n");
@@ -278,7 +302,9 @@ public class Exp2_S6_Matias_Suarez {
             }
         }
         System.out.println("Compra finalizada. Has comprado un total de " + cantidadAComprar + " entradas.\n");
+        
     }//Fin metodo ComprarEntrada
+    
     
     public void ImprimirBoleta(){
         System.out.println(":::... IMPRESION DE BOLETA ...:::");
@@ -307,6 +333,7 @@ public class Exp2_S6_Matias_Suarez {
         guardaAsientoComprado.clear(); //Limpiamos el arreglo con la informacion de compra
         
     }//Fin metodo ImprimirBoleta
+    
     
     public int CantidadEntradas(){
         
