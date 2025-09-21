@@ -10,9 +10,13 @@ import java.util.Scanner;
 public class Exp2_S6_Matias_Suarez {
     
     Scanner input = new Scanner(System.in);
+    
+    //Variables de Clase    
     static String nombreTeatro = "TEATRO MORO";
-    final int totalAsientosTeatro = 20;
-    final int valorEntrada = 5000;
+    static final int totalAsientosTeatro = 20;
+    static final int valorEntrada = 5000;
+    
+    //Variables de Instancia    
     final String[] asientos = new String[totalAsientosTeatro]; //estado de asientos Reservado - Comprado - Libre
     ArrayList<Integer> guardaAsientoComprado = new ArrayList<>();
     int entradasReservadas = 0;
@@ -137,6 +141,7 @@ public class Exp2_S6_Matias_Suarez {
         
         boolean existenReservados = false;
         
+        //Motramos los asientos en estado reservado
         for (int i = 0; i < totalAsientosTeatro; i++) {
             if (asientos[i].equals("Reservado")) {
                 System.out.print((i + 1) + "[" + asientos[i] + "]");
@@ -144,11 +149,12 @@ public class Exp2_S6_Matias_Suarez {
                 if ((i + 1) % 4 == 0) System.out.println("");
             }
         }
+        
         if (!existenReservados) {
             System.out.println("\nNo existen reservas para modificar");
             return;
         }
-        
+        System.out.println("");
         System.out.println("\nSeleccione una opcion para la reserva");
         System.out.println("1. Cambiar asiento reservado");
         System.out.println("2. Comprar la reserva del asiento");
@@ -170,6 +176,7 @@ public class Exp2_S6_Matias_Suarez {
                 reservaAntigua = input.nextInt();
                 input.nextLine();
                 
+                // ***--->> Punto de Interrupcion en la validacion del asiento que desea cambiar, haber si se cumplen las condiciones de la Liberacion
                 if (reservaAntigua < 1 || reservaAntigua > totalAsientosTeatro || (!asientos[reservaAntigua - 1].equals("Reservado"))) {
                     System.out.println("Asiento no reservado o no válido");
                     return;
@@ -180,18 +187,20 @@ public class Exp2_S6_Matias_Suarez {
                 reservaNueva = input.nextInt();
                 input.nextLine();
                 
-                if (reservaNueva < 1 || reservaNueva > totalAsientosTeatro || (!asientos[reservaNueva - 1].equals("Libre"))) {
+                // ***--->> Punto de Interrupcion en la validacion del asiento que desea cambiar, haber si se cumplen las condiciones de la nueva reserva
+                if (reservaNueva < 1 || reservaNueva > totalAsientosTeatro || (!asientos[reservaNueva - 1].equals("Libre"))) { 
                     System.out.println("Nuevo asiento no válido o no libre");
                     return;
                 }
                 
                 //Actualizar estado de asiento modificado
-                asientos[reservaAntigua - 1] = "Libre";
-                asientos[reservaNueva - 1] = "Reservado";
+                asientos[reservaAntigua - 1] = "Libre"; //***--->> Punto de interrupcion para verificar el cambio del asiento de Reservado a Libre
+                asientos[reservaNueva - 1] = "Reservado"; //***--->> Punto de interrupcion para verificar el cambio del asiento de Libre a Resrvado
                 
-                System.out.println("El cambio de asiento fue realizado con exito: " + reservaAntigua + " --> " + reservaNueva);
+                System.out.println("El cambio de asiento fue realizado con exito: " + reservaAntigua + " --> " + reservaNueva +'\n');
             
             } else if (opcionReserva == 2) {
+                
                 System.out.print("Ingrese el asiento reservado para comprarlo: ");
                 reservaACompra = input.nextInt();
                 input.nextLine();
@@ -224,6 +233,7 @@ public class Exp2_S6_Matias_Suarez {
         System.out.println("Los asientos disponibles para comprar son:\n");
         
         boolean existenLibres = false;
+        //Verificamos si hay asientos libres y los mostramos
         for (int i = 0; i < totalAsientosTeatro; i++) {
             if (asientos[i].equals("Libre")) {
                 System.out.print((i + 1) + "[" + asientos[i] + "]");
@@ -267,13 +277,13 @@ public class Exp2_S6_Matias_Suarez {
                 input.nextLine();
             }
         }
-        System.out.println("Compra finalizada. Has comprado un total de " + cantidadAComprar + " entradas.");
+        System.out.println("Compra finalizada. Has comprado un total de " + cantidadAComprar + " entradas.\n");
     }//Fin metodo ComprarEntrada
     
     public void ImprimirBoleta(){
         System.out.println(":::... IMPRESION DE BOLETA ...:::");
         
-        int totalBoleta = valorEntrada * guardaAsientoComprado.size();
+        int totalBoleta = valorEntrada * guardaAsientoComprado.size(); //***--->>Punto de interrupcion para validar el calculo del totalBoleta con tamaño de la compra 
         
         if (guardaAsientoComprado.isEmpty()) {
             System.out.println("No hay compras recientes para generar la boleta");
@@ -281,15 +291,15 @@ public class Exp2_S6_Matias_Suarez {
         }
                 
         System.out.println("");
-        System.out.println("=====--->>>Boleta de Reserva<<<---====" + '\n');
+        System.out.println("=====--->>>Boleta de Compra<<<---====" + '\n');
         System.out.println("Teatro: " + nombreTeatro);
-        System.out.println("Asientos Comprados: ");
+        System.out.println("Asientos Comprados: "); //***--->> Punto de interrupcion para ver como se recorre el arreglo y muestra los asientos comprados
             for (int asiento : guardaAsientoComprado) {
                 System.out.println("- Asiento N°: " + asiento);
             }
-        System.out.println("Cantidad Entradas: " + guardaAsientoComprado.size());
+        System.out.println("Cantidad Entradas: " + guardaAsientoComprado.size()); //***--->> Punto de interrupcion para ver la cantidad de asientos en arreglo
         System.out.println("Valor unitario: " + valorEntrada);
-        System.out.println("Total: $" + (totalBoleta));
+        System.out.println("Totala a pagar: $" + (totalBoleta));
         System.out.println("\n======================================\n");
         
         System.out.println("Boleta generada correctamente, Muchas Gracias.\n");
