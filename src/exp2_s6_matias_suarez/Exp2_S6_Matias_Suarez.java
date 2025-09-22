@@ -25,7 +25,7 @@ public class Exp2_S6_Matias_Suarez {
     int entradasVendidas = 0;
     
     
-    //Clase Main
+    //***--->> Clase Main <<---***
     public static void main(String[] args) throws InterruptedException {
         System.out.println("====--->>> BIENVENIDOS AL EXPECTACULAR " + nombreTeatro + " <<<---====\n");
         
@@ -73,12 +73,12 @@ public class Exp2_S6_Matias_Suarez {
                         break;
                     case 5:
                         System.out.println("Usted esta saliendo del sistema, Muchas gracias.");
-                    for (int i = 0; i < 3; i++) {
-                        Thread.sleep(900);
-                        System.out.print(".");
-                    }
-                    System.out.println("");
-                    break;//fin break menu (5)
+                        for (int i = 0; i < 3; i++) {
+                            Thread.sleep(900);
+                            System.out.print(".");
+                        }
+                        System.out.println("");
+                        break;//fin break menu (5)
                     default:
                         System.out.println("Opcion Ingresada no es valida, Intente nuevamente");
                 }
