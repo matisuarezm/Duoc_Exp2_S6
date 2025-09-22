@@ -32,6 +32,7 @@ public class Exp2_S6_Matias_Suarez {
         //Instanciamos la clase y llamamos al metodo MostrarMenu()
         Exp2_S6_Matias_Suarez menuPrincipal = new Exp2_S6_Matias_Suarez();
         menuPrincipal.MostrarMenu();
+        menuPrincipal.input.close(); //Cerramos el Scanner
     }
     
     
